@@ -14,6 +14,7 @@ class CategoryGridItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isNightMode = Theme.of(context).brightness == Brightness.dark;
     return InkWell(
       onTap: onSelectCategory,
       splashColor: Theme.of(context).primaryColor,
@@ -32,7 +33,9 @@ class CategoryGridItem extends StatelessWidget {
             )),
         child: Text(
           category.title,
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+          style: isNightMode ? Theme.of(context).textTheme.titleLarge!.copyWith(
+                color: Theme.of(context).colorScheme.onSurface,
+              ) : Theme.of(context).textTheme.titleLarge!.copyWith(
                 color: Theme.of(context).colorScheme.onPrimary,
               ),
         ),
