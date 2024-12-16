@@ -28,8 +28,12 @@ class MainDrawer extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Icon(Icons.fastfood, size: 48, color: Theme.of(context).colorScheme.onPrimary,),
-                 const SizedBox(width: 18),
+                Image.asset(
+                  'assets/meal-icon.png',
+                  width: 72,
+                  height: 72,
+                ),
+                const SizedBox(width: 18),
                 Text(
                   'Cooking Up!',
                   style: Theme.of(context).textTheme.titleLarge!.copyWith(
@@ -43,12 +47,12 @@ class MainDrawer extends StatelessWidget {
             leading: Icon(
                 Icons.restaurant,
                 size: 26,
-                color: Theme.of(context).colorScheme.onSurface,
+                color: Theme.of(context).colorScheme.primary,
               ),
             title: Text(
               'Meals',
               style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
+                color: Theme.of(context).colorScheme.primary,
                 fontSize: 24,
               ),
             ),
@@ -60,12 +64,12 @@ class MainDrawer extends StatelessWidget {
             leading: FaIcon(
                 FontAwesomeIcons.sliders,
                 size: 26,
-                color: Theme.of(context).colorScheme.onSurface,
+                color: Theme.of(context).colorScheme.primary,
               ),
             title: Text(
               'Filters',
               style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
+                color: Theme.of(context).colorScheme.primary,
                 fontSize: 24,
               ),
             ),

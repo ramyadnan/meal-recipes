@@ -1,39 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meals/models/meal.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meals/providers/favourites_provider.dart';
 
-class MealDetailsScreen extends StatefulWidget {
+class MealDetailsScreen extends ConsumerWidget {
   const MealDetailsScreen({
     super.key,
     required this.meal,
-    required this.onToggleFavourite,
   });
 
   final Meal meal;
-  final void Function(Meal) onToggleFavourite;
 
   @override
-  State<StatefulWidget> createState() {
-    return _MealDetailsScreenState();
-  }
-}
-
-class _MealDetailsScreenState extends State<MealDetailsScreen> {
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isFavourite = ref.watch(favouriteMealsProvider).contains(meal);
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.meal.title),
+        title: Text(meal.title),
         actions: [
           IconButton(
             icon: Icon(
-              widget.meal.isFavourite ? Icons.star : Icons.star_border,
+              isFavourite ? Icons.star : Icons.star_border,
             ),
             onPressed: () {
-              setState(() {
-                widget.onToggleFavourite(widget.meal);
-              });
+              final wasAdded = ref
+                  .read(favouriteMealsProvider.notifier)
+                  .toggleFavouriteMeals(meal);
+              ScaffoldMessenger.of(context).clearSnackBars();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  content: Text(
+                      wasAdded ? 'Meal added as a favorite.' : 'Meal removed.',
+                      style: const TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                ),
+              );
             },
           ),
         ],
@@ -56,7 +61,7 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Image.network(
-                    widget.meal.imageUrl,
+                    meal.imageUrl,
                     height: 300,
                     width: double.infinity,
                     fit: BoxFit.cover,
@@ -83,7 +88,7 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        for (final ingredient in widget.meal.ingredients)
+                        for (final ingredient in meal.ingredients)
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,7 +151,7 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          for (final entry in widget.meal.steps.asMap().entries)
+                          for (final entry in meal.steps.asMap().entries)
                             Padding(
                               padding: const EdgeInsets.only(bottom: 6),
                               child: Row(

@@ -11,7 +11,7 @@ enum Affordability {
 }
 
 class Meal {
-  Meal({
+  const Meal({
     required this.id,
     required this.categories,
     required this.title,
@@ -25,7 +25,6 @@ class Meal {
     required this.isLactoseFree,
     required this.isVegan,
     required this.isVegetarian,
-    this.isFavourite = false,
   });
 
   final String id;
@@ -41,5 +40,4 @@ class Meal {
   final bool isLactoseFree;
   final bool isVegan;
   final bool isVegetarian;
-  bool isFavourite;
 }
