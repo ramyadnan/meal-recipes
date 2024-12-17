@@ -20,9 +20,20 @@ class MealDetailsScreen extends ConsumerWidget {
         title: Text(meal.title),
         actions: [
           IconButton(
-            icon: Icon(
-              isFavourite ? Icons.star : Icons.star_border,
-            ),
+            icon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              transitionBuilder: (child, animation) => ScaleTransition(
+                scale: Tween<double>(
+                  begin: 0.5,
+                  end: 1.0,
+                ).animate(animation),
+                child: child,
+              ),
+              child: Icon( 
+                isFavourite ? Icons.star : Icons.star_border,
+                key: ValueKey(isFavourite),
+              ),
+            ), 
             onPressed: () {
               final wasAdded = ref
                   .read(favouriteMealsProvider.notifier)
@@ -58,13 +69,16 @@ class MealDetailsScreen extends ConsumerWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image.network(
-                    meal.imageUrl,
-                    height: 300,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
+                child: Hero(
+                  tag: meal.id,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.network(
+                      meal.imageUrl,
+                      height: 300,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
